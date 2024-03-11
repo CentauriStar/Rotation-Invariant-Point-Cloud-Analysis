@@ -7,7 +7,12 @@ This repository is the official implementation of "**Rethinking Local-to-Global 
 In this paper, we propose a novel rotation-invariant method that embeds both distinctive local and global rotation-invariant information. Specifically, we design a two-branch network that separately extracts purely local and global rotation-invariant features. 
 In the global branch, we leverage canonical transformation to extract global representations, while in the local branch, we utilize hand-crafted geometric features to embed local representations.
 To fuse the features from distinct branches, we introduce an attention-based fusion module to adaptively integrate the local-to-global representation by considering the geometry contexts of each point. 
-Particularly, different from existing rotation-invariant works, we further introduce a self-attention unit into the global branch for embedding non-local information and also insert multiple fusion modules into the local branch to emphasize the global features. <br><br>
+Particularly, different from existing rotation-invariant works, we further introduce a self-attention unit into the global branch for embedding non-local information and also insert multiple fusion modules into the local branch to emphasize the global features. <br>
+
+<div align=center>
+    <img src="intro/overview.png"/ width="70%" height="70%">
+</div>
+
 If you have any questions about this work, please open an issue or contact us.
 
 ## Environment
@@ -111,5 +116,7 @@ sh test_seg_so3.sh # for ShapeNet Part with normals in SO3 case
 
   _**Note:**_ Due to the _random_ factor of testing, the results may not be identical for multiple runs, please run several times to obtain the best performance.
 
-  ## Citation
+## Results
+
+## Citation
 If you find our work helpful in your research, please consider citing:

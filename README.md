@@ -21,7 +21,7 @@ We train & test under the environment listed below, _the higher version of CUDA 
 - CUDA = 11.0<br>
 - Python = 3.8<br>
 - Ubuntu = 20.04<br>
-- GPU = Nvidia RTX 3090 x1
+- GPU = Nvidia RTX 3090×1
 
 ## Prerequisites
 - ### torch-batch-svd installation<br>
@@ -77,8 +77,8 @@ sh PaRINet_rot_z_glob_bary.sh # for ModelNet40 without normals in z case
 sh PaRINet_so3.sh # for ModelNet40 with normals in SO3 case
 sh PaRINet_so3_glob_bary.sh # for ModelNet40 without normals in SO3 case
 # ScanObjectNN
-sh Scan_rot_z.sh # for ScanObjectNN with normals in z case
-sh Scan_so3.sh # for ScanObjectNN with normals in SO3 case
+sh Scan_rot_z.sh # for ScanObjectNN in z case
+sh Scan_so3.sh # for ScanObjectNN in SO3 case
 # ShapeNet Part
 sh seg_rot_z.sh # for ShapeNet Part with normals in z case
 sh seg_so3.sh # for ShapeNet Part with normals in SO3 case
@@ -91,14 +91,14 @@ tensorboard --logdir log
 
 ## Testing
   ### Pre-trained models
-  We provide pre-trained models for classification and segmentation tasks.
+  We provide pre-trained models for classification and segmentation tasks. _The models are trained with normals in z case._
   | datasets    | Acc. / mIOU |    links    |
   | :-----------: | :-----------: | :-----------: |
-  | ModelNet40     | 93.2%       | Google Drive, Baidu NetDisk       |
-  | ScanObjectNN   | 78.6%        | Google Drive, Baidu NetDisk      |
-  | ShapeNet Part  | 83.3%        | Google Drive, Baidu NetDisk       |
+  | ModelNet40     | 93.2%       | [Google Drive](https://drive.google.com/file/d/16oASX1ocYH7S1f1Zl3DWN7csWiRHLBdP/view?usp=drive_link) / [Baidu NetDisk](https://pan.baidu.com/s/1qS-BgfKb1JjL1Bo117RUjg) (code: 4qsz)       |
+  | ScanObjectNN   | 78.6% (PB_T50_RS)       | [Google Drive](https://drive.google.com/file/d/1OY35bB8op2Jn9oJp5nlfdADIQCP_LywF/view?usp=drive_link) / [Baidu NetDisk](https://pan.baidu.com/s/1RnEx1qoGzLQyuzo7ELyf8g) (code: y8tm)      |
+  | ShapeNet Part  | 83.3%        | Google Drive / Baidu NetDisk       |
   
-  For example, readers can download the provided pre-trained models, and place the `.pth` files in `log/PaRINet_rot_z/best/xxxx.pth` to test the performance for ModelNet40 with normals in z case.<br><br>
+  For example, readers can download the provided pre-trained model for ModelNet40, and place the `.pth` files in `log/PaRINet_rot_z/best/modelnet40_rotz.pth` to test the performance for ModelNet40 with normals in z or SO3 case.<br><br>
 ```
 cd scripts/test/
 # ModelNet40
@@ -107,8 +107,8 @@ sh test_PaRINet_rot_z_glob_bary.sh # for ModelNet40 without normals in z case
 sh test_PaRINet_so3.sh # for ModelNet40 with normals in SO3 case
 sh test_PaRINet_so3_glob_bary.sh # for ModelNet40 without normals in SO3 case
 # ScanObjectNN
-sh test_Scan_rot_z.sh # for ScanObjectNN with normals in z case
-sh test_Scan_so3.sh # for ScanObjectNN with normals in SO3 case
+sh test_Scan_rot_z.sh # for ScanObjectNN in z case
+sh test_Scan_so3.sh # for ScanObjectNN in SO3 case
 # ShapeNet Part
 sh test_seg_rot_z.sh # for ShapeNet Part with normals in z case
 sh test_seg_so3.sh # for ShapeNet Part with normals in SO3 case

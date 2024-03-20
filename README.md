@@ -1,6 +1,6 @@
 # Rethinking Local-to-Global Representation Learning for Rotation-Invariant Point Cloud Analysis
 by Zhaoxuan Wang, Yunlong Yu and [Xianzhi Li](https://nini-lxz.github.io/) <br>
-in *Pattern Recognition 2024*
+in *Pattern Recognition 2024* [paper] [supp.]
 
 ## Introduction
 This repository is the official implementation of "**Rethinking Local-to-Global Representation Learning for Rotation-Invariant Point Cloud Analysis**" in Pattern Recognition (PR). <br><br>
@@ -117,6 +117,43 @@ sh test_seg_so3.sh # for ShapeNet Part with normals in SO3 case
   _**Note:**_ Due to the _random_ factor of testing, the results may not be identical for multiple runs, please run several times to obtain the best performance.
 
 ## Results
+### Shape Classification
+
+  <table>
+    <tr align="center">
+        <th>dataset</th><th>methods</th><th>Acc.</th><th>#Params</th><th>dataset</th><th>methods</th><th>Acc.</th>
+    </tr>
+    <tr align="center">
+        <td rowspan="4">ModelNet40</td><td>LGR-Net</td><td>90.9%</td><td>5.55M</td><td rowspan="4">ScanObjectNN(PB_T50_RS)</td><td>LGR-Net</td><td>72.7%</td>
+    </tr>
+    <tr align="center">
+        <td>RIConv++</td><td>91.3%</td><td>0.42M</td><td>RIConv++</td><td>80.3%</td>
+    </tr>
+    <tr align="center">
+        <td>PaRI-Conv</td><td>92.4%</td><td>1.85M</td><td>-</td><td>-</td>
+    </tr>
+    <tr align="center">
+        <td><b>Ours</b></td><td>93.2%</td><td>1.88M</td><td><b>Ours</b></td><td>78.6%</td>
+    </tr>
+</table>
+
+### Part Segmentation
+
+  <table>
+    <tr align="center">
+        <th>dataset</th><th>methods</th><th>mIOU</th>
+    </tr>
+    <tr align="center">
+        <td rowspan="4">ShapeNet Part</td><td>LGR-Net</td><td>82.8%</td>
+    </tr>
+    <tr align="center">
+        <td>PaRI-Conv</td><td>84.6%</td>
+    </tr>
+    <tr align="center">
+        <td><b>Ours</b></td><td>83.3%</td>
+    </tr>
+</table>
+
 
 ## Citation
 If you find our work helpful in your research, please consider citing:

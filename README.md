@@ -95,8 +95,9 @@ tensorboard --logdir log
   | datasets    | Acc. / mIOU |    links    |
   | :-----------: | :-----------: | :-----------: |
   | ModelNet40     | 93.2%       | [Google Drive](https://drive.google.com/file/d/16oASX1ocYH7S1f1Zl3DWN7csWiRHLBdP/view?usp=drive_link) / [Baidu NetDisk](https://pan.baidu.com/s/1qS-BgfKb1JjL1Bo117RUjg) (code: 4qsz)       |
-  | ScanObjectNN   | 78.6% (PB_T50_RS)       | [Google Drive](https://drive.google.com/file/d/1OY35bB8op2Jn9oJp5nlfdADIQCP_LywF/view?usp=drive_link) / [Baidu NetDisk](https://pan.baidu.com/s/1RnEx1qoGzLQyuzo7ELyf8g) (code: y8tm)      |
+  | ScanObjectNN   | 78.6%*       | [Google Drive](https://drive.google.com/file/d/1OY35bB8op2Jn9oJp5nlfdADIQCP_LywF/view?usp=drive_link) / [Baidu NetDisk](https://pan.baidu.com/s/1RnEx1qoGzLQyuzo7ELyf8g) (code: y8tm)      |
   | ShapeNet Part  | 83.3%        | Google Drive / Baidu NetDisk       |
+  > *We report the accuracy on PB_T50_RS variant of ScanObjectNN.
   
   For example, readers can download the provided pre-trained model for ModelNet40, and place the `.pth` files in `log/PaRINet_rot_z/best/modelnet40_rotz.pth` to test the performance for ModelNet40 with normals in z or SO3 case.<br><br>
 ```

@@ -117,9 +117,10 @@ sh test_seg_so3.sh # for ShapeNet Part with normals in SO3 case
   _**Note:**_ Due to the _random_ factor of testing, the results may not be identical for multiple runs, please run several times to obtain the best performance.
 
 ## Results
+> For more detailed results, please refer to the paper.
 ### Shape Classification
 
-  <table>
+  <table align="center">
     <tr align="center">
         <th>dataset</th><th>methods</th><th>Acc.</th><th>#Params</th><th>dataset</th><th>methods</th><th>Acc.</th>
     </tr>
@@ -139,7 +140,7 @@ sh test_seg_so3.sh # for ShapeNet Part with normals in SO3 case
 
 ### Part Segmentation
 
-  <table>
+  <table align="center">
     <tr align="center">
         <th>dataset</th><th>methods</th><th>mIOU</th>
     </tr>
@@ -153,6 +154,10 @@ sh test_seg_so3.sh # for ShapeNet Part with normals in SO3 case
         <td><b>Ours</b></td><td>83.3%</td>
     </tr>
 </table>
+<br>
+<div align=center>
+    <img src="intro/partseg_visualization.png"/ width="70%" height="70%">
+</div>
 
 
 ## Citation

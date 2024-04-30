@@ -3,7 +3,7 @@ by Zhaoxuan Wang, Yunlong Yu and [Xianzhi Li](https://nini-lxz.github.io/) <br>
 <!--(in *Pattern Recognition 2024* [paper] [supp.])-->
 
 ## Introduction
-This repository is the official implementation of "**Rethinking Local-to-Global Representation Learning for Rotation-Invariant Point Cloud Analysis**" <br>
+This repository is the official implementation of "**Rethinking Local-to-Global Representation Learning for Rotation-Invariant Point Cloud Analysis**". <br>
 <!--in Pattern Recognition (PR). -->
 In this paper, we propose a novel rotation-invariant method that embeds both distinctive local and global rotation-invariant information. Specifically, we design a two-branch network that separately extracts purely local and global rotation-invariant features. 
 In the global branch, we leverage canonical transformation to extract global representations, while in the local branch, we utilize hand-crafted geometric features to embed local representations.
@@ -22,7 +22,7 @@ We train & test under the environment listed below, _the higher version of CUDA 
 - CUDA = 11.0<br>
 - Python = 3.8<br>
 - Ubuntu = 20.04<br>
-- GPU = Nvidia RTX 3090×1
+- GPU = NVIDIA RTX 3090×1
 
 ## Prerequisites
 - ### torch-batch-svd installation<br>

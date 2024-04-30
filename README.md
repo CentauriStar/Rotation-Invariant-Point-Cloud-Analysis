@@ -1,9 +1,10 @@
 # Rethinking Local-to-Global Representation Learning for Rotation-Invariant Point Cloud Analysis
 by Zhaoxuan Wang, Yunlong Yu and [Xianzhi Li](https://nini-lxz.github.io/) <br>
-in *Pattern Recognition 2024* [paper] [supp.]
+<!--(in *Pattern Recognition 2024* [paper] [supp.])-->
 
 ## Introduction
-This repository is the official implementation of "**Rethinking Local-to-Global Representation Learning for Rotation-Invariant Point Cloud Analysis**" in Pattern Recognition (PR). <br><br>
+This repository is the official implementation of "**Rethinking Local-to-Global Representation Learning for Rotation-Invariant Point Cloud Analysis**" <br>
+<!--in Pattern Recognition (PR). -->
 In this paper, we propose a novel rotation-invariant method that embeds both distinctive local and global rotation-invariant information. Specifically, we design a two-branch network that separately extracts purely local and global rotation-invariant features. 
 In the global branch, we leverage canonical transformation to extract global representations, while in the local branch, we utilize hand-crafted geometric features to embed local representations.
 To fuse the features from distinct branches, we introduce an attention-based fusion module to adaptively integrate the local-to-global representation by considering the geometry contexts of each point. 
@@ -13,7 +14,7 @@ Particularly, different from existing rotation-invariant works, we further intro
     <img src="intro/overview.png"/ width="70%" height="70%">
 </div>
 
-If you have any questions about this work, please open an issue or contact us.
+<!--If you have any questions about this work, please open an issue or contact us.-->
 
 ## Environment
 We train & test under the environment listed below, _the higher version of CUDA may not be compatible_.
@@ -63,7 +64,6 @@ We train & test under the environment listed below, _the higher version of CUDA 
       │   │   ├── 02691156
       │   │   ├── ...
       │   │   ├── synsetoffset2category.txt   
-      ├── log
       ├── Networks
       ├── ...
       ```
@@ -72,16 +72,18 @@ We train & test under the environment listed below, _the higher version of CUDA 
 ```
 cd scripts/train/
 # ModelNet40
-sh PaRINet_rot_z.sh # for ModelNet40 with normals in z case
-sh PaRINet_rot_z_glob_bary.sh # for ModelNet40 without normals in z case
-sh PaRINet_so3.sh # for ModelNet40 with normals in SO3 case
-sh PaRINet_so3_glob_bary.sh # for ModelNet40 without normals in SO3 case
+sh MN40_rotz_normals.sh # for ModelNet40 with normals in z case
+sh MN40_rotz.sh # for ModelNet40 without normals in z case
+sh MN40_so3_normals.sh # for ModelNet40 with normals in SO3 case
+sh MN40_so3.sh # for ModelNet40 without normals in SO3 case
 # ScanObjectNN
-sh Scan_rot_z.sh # for ScanObjectNN in z case
+sh Scan_rotz.sh # for ScanObjectNN in z case
 sh Scan_so3.sh # for ScanObjectNN in SO3 case
 # ShapeNet Part
-sh seg_rot_z.sh # for ShapeNet Part with normals in z case
-sh seg_so3.sh # for ShapeNet Part with normals in SO3 case
+sh Seg_rotz_normals.sh # for ShapeNet Part with normals in z case
+sh Seg_rotz.sh # for ShapeNet Part without normals in z case
+sh Seg_so3_normals.sh # for ShapeNet Part with normals in SO3 case
+sh Seg_so3.sh # for ShapeNet Part without normals in SO3 case
 ```
 
 To visualize the training process, please run:
@@ -99,20 +101,22 @@ tensorboard --logdir log
   | ShapeNet Part  | 83.3%        | [Google Drive](https://drive.google.com/file/d/1NaVlUbmO-MgdMJh7xCCgjtIL3rSceR-_/view?usp=sharing) / [Baidu NetDisk](https://pan.baidu.com/s/1Mi7FQ0ZTtMJKc62aFT3s7Q) (code: 6xnc)       |
   > *We report the accuracy on PB_T50_RS variant of ScanObjectNN.
   
-  For example, readers can download the provided pre-trained model for ModelNet40, and place the `.pth` files in `log/PaRINet_rot_z/best/modelnet40_rotz.pth` to test the performance for ModelNet40 with normals in z or SO3 case.<br><br>
+  For example, readers can download the provided pre-trained model for ModelNet40, and place the `.pth` files in `log/modelnet40_rotz/best/modelnet40_rotz.pth` to test the performance for ModelNet40 with normals in z or SO3 case.<br><br>
 ```
 cd scripts/test/
 # ModelNet40
-sh test_PaRINet_rot_z.sh # for ModelNet40 with normals in z case
-sh test_PaRINet_rot_z_glob_bary.sh # for ModelNet40 without normals in z case
-sh test_PaRINet_so3.sh # for ModelNet40 with normals in SO3 case
-sh test_PaRINet_so3_glob_bary.sh # for ModelNet40 without normals in SO3 case
+sh test_MN40_rotz_normals.sh # for ModelNet40 with normals in z case
+sh test_MN40_rotz.sh # for ModelNet40 without normals in z case
+sh test_MN40_so3_normals.sh # for ModelNet40 with normals in SO3 case
+sh test_MN40_so3.sh # for ModelNet40 without normals in SO3 case
 # ScanObjectNN
-sh test_Scan_rot_z.sh # for ScanObjectNN in z case
+sh test_Scan_rotz.sh # for ScanObjectNN in z case
 sh test_Scan_so3.sh # for ScanObjectNN in SO3 case
 # ShapeNet Part
-sh test_seg_rot_z.sh # for ShapeNet Part with normals in z case
-sh test_seg_so3.sh # for ShapeNet Part with normals in SO3 case
+sh test_Seg_rotz_normals.sh # for ShapeNet Part with normals in z case
+sh test_Seg_rotz.sh # for ShapeNet Part without normals in z case
+sh test_Seg_so3_normals.sh # for ShapeNet Part with normals in SO3 case
+sh test_Seg_so3.sh # for ShapeNet Part without normals in SO3 case
 ```
 
   _**Note:**_ Due to the _random_ factor of testing, the results may not be identical for multiple runs, please run several times to obtain the best performance.
@@ -161,5 +165,5 @@ sh test_seg_so3.sh # for ShapeNet Part with normals in SO3 case
 </div>
 
 
-## Citation
-If you find our work helpful in your research, please consider citing:
+<!--## Citation-->
+<!--If you find our work helpful in your research, please consider citing:-->

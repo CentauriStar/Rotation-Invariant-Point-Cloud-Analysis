@@ -3,7 +3,7 @@ import torch.nn as nn
 # from torch.nn import Sequential as Seq, Dropout, Linear as Lin, ReLU, BatchNorm1d as BN
 import torch.nn.functional as F
 import numpy as np
-from torch_batch_svd import batch_svd
+from torch_batch_svd import svd
 
 PI = torch.from_numpy(np.array(np.pi))
 
@@ -368,7 +368,7 @@ def global_transform(points, npoints, train):
     idx = farthest_point_sample(points, npoints)
     centroids = index_points(points, idx)   #[B, S, C] 
     # print(centroids.shape)
-    U, S, V = batch_svd(centroids)
+    U, S, V = svd(centroids)
 
     if train == True:
         index = torch.randint(2, (points.size(0), 1, 3)).type(torch.FloatTensor).cuda()

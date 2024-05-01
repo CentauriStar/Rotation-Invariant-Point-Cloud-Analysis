@@ -103,7 +103,7 @@ tensorboard --logdir log
   | ShapeNet Part  | 83.3%        | [Google Drive](https://drive.google.com/file/d/1NaVlUbmO-MgdMJh7xCCgjtIL3rSceR-_/view?usp=sharing) / [Baidu NetDisk](https://pan.baidu.com/s/1Mi7FQ0ZTtMJKc62aFT3s7Q) (code: 6xnc)       |
   > *We report the accuracy on PB_T50_RS variant of ScanObjectNN.
   
-  For example, you can download the provided pre-trained model for ModelNet40, and rename the `.pth` to `network_0.pth`. Place the file in `log/modelnet40_rotz/best/network_0.pth` to test the performance for ModelNet40 with normals in z case.<br><br>
+  For example, you can download the provided pre-trained model for ModelNet40, and rename the `.pth` file to `network_0.pth`. Place the file in `log/modelnet40_rotz/best/network_0.pth` to test the performance for ModelNet40 with normals in z case.<br><br>
     _**Note:**_ Due to the _random_ factor of testing, the results may not be identical for multiple runs, please run several times to obtain the best performance.<br>
 ```
 # ModelNet40

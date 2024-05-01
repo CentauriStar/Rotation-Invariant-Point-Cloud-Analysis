@@ -27,9 +27,7 @@ class RandomShuffle(object):
                 data[key] = data[key][indices]
 
         else:
-            # print(data.__dict__)
             for key in data.__dict__:
-                # print(key)
                 if data[key] is not None:
                     if data[key].size(0)==data.pos.size(0):
                         data[key] = data[key][indices]
@@ -62,9 +60,9 @@ class RandomShiver(object):
             if self.with_norm:
                 data.norm = data.norm / xyz1.unsqueeze(0)
         else:
-            data.LRA = data.LRA / xyz1.unsqueeze(0) # comment in seg task
+            data.LRA = data.LRA / xyz1.unsqueeze(0)
             if self.with_norm:
-                data.norm = data.norm / xyz1.unsqueeze(0) # comment in glob_bary_seg task
+                data.norm = data.norm / xyz1.unsqueeze(0)
 
         return data
 
@@ -164,7 +162,6 @@ class GetBarycenter(object):
 
     def __call__(self, data):
         row, col = knn(data.pos, data.pos, self.k)
-#         print(data.pos.shape)
         return data.pos[col].view(-1, self.k, 3).mean(dim=1) - data.pos
 
 class GetO3dNormal(object):
@@ -232,7 +229,7 @@ class LRF(object):
             if name=="normal":
                 if not o3d_normal:
                     if self.task == 'cls':
-                        get_lrf.append(lambda data: data.LRA) # cls: LRA, seg: norm
+                        get_lrf.append(lambda data: data.LRA)
                     else:
                         get_lrf.append(lambda data: data.norm)
                 else:
@@ -254,8 +251,6 @@ class LRF(object):
                 data.l2 = F.normalize(data.norm)
             else:
                 data.l2 = F.normalize(data.LRA)
-
-#         data.l2 = F.normalize(data.norm) # comment in seg task, scanobj\glob-bary:data.LRA, modelnet:data.norm
 
         return data
 
@@ -290,40 +285,18 @@ class RandRotSO3(object):
             if self.with_norm:
                 data.norm = data.pos[2]
                 data[key] = data.pos[1]
-                data.pos = data.pos[0] # comment in glob_bary_seg task
+                data.pos = data.pos[0] 
             else:
                 data[key] = data.pos[1]
-                data.pos = data.pos[0] # comment in glob_bary_seg task
+                data.pos = data.pos[0] 
         elif self.task == 'seg':
             if self.with_norm:
                 key = 'norm'
                 data[key] = data.pos[1]
-                data.pos = data.pos[0] # comment in glob_bary_seg task
+                data.pos = data.pos[0] 
             else:
                 data.pos = data.pos
         return data
-
-
-
-'''
-        if hasattr(data, 'pos'): # cls: LRA, seg: norm, glob_bary_seg:pos
-            key = 'pos' # cls: LRA, seg: norm, glob_bary_seg:pos
-#             data.pos = torch.stack((data.pos, data[key]), dim=0) # for seg
-            data.pos = data.pos # for glob_bary seg
-#             data.pos = torch.stack((data.pos, data[key], data.norm), dim=0) # for cls
-#             data.pos = torch.stack((data.pos, data[key]), dim=0) # for glob_bary cls
-
-        data.pos = self.rand_rot_so3(data).pos
-
-        # try:
-#         data.norm = data.pos[2] # comment in seg task
-#         data[key] = data.pos[1]
-#         data.pos = data.pos[0] # comment in glob_bary_seg task
-        # except:
-        #     pass
-
-        return data
-'''
 
 def grey_print(x):
     print(colored(x, "grey"))

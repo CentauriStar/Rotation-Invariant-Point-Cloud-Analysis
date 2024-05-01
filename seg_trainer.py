@@ -107,9 +107,6 @@ class seg_Trainer(object):
             print("No such dataset.")
             assert 1==0
 
-
-#         self.train_dataset.class_num = self.train_dataset.class_num
-
         self.train_loader = DataLoader(dataset=self.train_dataset,
                                          batch_size=self.opt.batch_size,
                                          shuffle=True,
@@ -121,8 +118,6 @@ class seg_Trainer(object):
                                       shuffle=False,
                                       num_workers=int(self.opt.workers),
                                       drop_last=False)
-#         self.opt.output_channels = int(self.train_dataset.class_num)
-
 
     def build_network(self):
         network = Networks.seg_Net(self.opt)
@@ -192,9 +187,6 @@ class seg_Trainer(object):
 
         self.optimizer.zero_grad()
         preds = pred.max(dim=2)[1] # part predicted
-#         print('preds:', preds.shape)
-#         print('label:', self.label.shape)
-#         print('cat:', self.cat.shape)
         self.meter.collect(preds, self.label.view(-1, 2048), loss, self.cat.unsqueeze(1))
 
     def train_epoch(self):
@@ -237,10 +229,6 @@ class seg_Trainer(object):
             self.increment_iteration()
 
         result = self.meter.output()
-        # true_filename = 'true_{}.txt'.format(self.epoch)
-        # pred_filename = 'pred_{}.txt'.format(self.epoch)
-        # np.savetxt(true_filename, result['true'], fmt='%d')
-        # np.savetxt(pred_filename, result['pred'], fmt='%d')
         if self.opt.test_final:
             self.result.collect_dict(**result)
 

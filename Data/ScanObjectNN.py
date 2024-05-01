@@ -124,21 +124,6 @@ class ScanObjectNNCls(data.Dataset):
 
         self.class_num = self.labels.max() + 1
 
-#         self.points_ = torch.tensor(self.points).cuda()
-#         fps_idx = farthest_point_sample(self.points_[:,:,:3], 1024)
-#         self.points_ = index_points(self.points_, fps_idx.long())
-#         self.points = self.points_.cpu()
-#         del self.points_
-#         del fps_idx
-#         torch.cuda.empty_cache()
-
-#         norm = torch.zeros_like(self.points)
-#         for i in range(self.points.shape[0]):
-#             norm_i = compute_LRA(self.points[i,:,:].unsqueeze(0), True, nsample = 32)
-#             norm[i,:,:] = norm_i
-
-#         self.points = torch.cat([self.points, norm], dim=-1)
-
         print('Successfully load ScanObjectNN with', len(self.labels), 'instances')
 
     def __getitem__(self, idx):
@@ -156,34 +141,8 @@ class ScanObjectNNCls(data.Dataset):
         
         if self.transforms is not None:
             data = self.transforms(data)
-
-        # if self.self_supervision:
-        #     return current_points
-        # else:
-        # label = self.labels[idx]
         return data
 
-        ###############################################################
-        # pc = self.data[index][:self.npoints].numpy()
-        # # pc = self.data[index].numpy()
-        # cls = np.asarray(self.label[index])
-        #
-        # pc[:, 0:3] = pc_normalize(pc[:, 0:3])
-        #
-        # points = self._augment_data(pc)  # only shuffle by default
-
-        # print(points)
-
-        # print((self.cache[index] - points).mean())
-
-        # data = Data(pos=torch.from_numpy(points[:, :3]).float(), y=torch.from_numpy(cls).long(),
-        #             norm=torch.from_numpy(points[:, 3:]).float())
-        # data.idx = index
-        #
-        # if self.transform is not None:
-        #     data = self.transform(data)
-
-        # return data
 
     def __len__(self):
         return self.points.shape[0]

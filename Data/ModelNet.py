@@ -114,8 +114,6 @@ class ModelNetNormal(Dataset):
             point_set = point_set[0:self.npoints, :]
             if self.normalize:
                 point_set[:, 0:3] = pc_normalize(point_set[:, 0:3])
-            # if not self.normal_channel:
-            #     point_set = point_set[:, 0:3]
             if len(self.cache) < self.cache_size:
                 self.cache[index] = (point_set, cls)
 
@@ -125,7 +123,6 @@ class ModelNetNormal(Dataset):
         points = self._augment_data(point_set, shuffle=self.shuffle)              # only shuffle by default
         
         lra = compute_LRA(torch.from_numpy(points[:, :3]).float().unsqueeze(0), True, nsample = 32)
-#         data.LRA = lra.squeeze(0)
         
         if self.normal_channel:
             data = Data(pos=torch.from_numpy(points[:, :3]).float(), y=torch.from_numpy(cls).long(),

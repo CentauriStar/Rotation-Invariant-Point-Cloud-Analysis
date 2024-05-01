@@ -31,7 +31,6 @@ class PartNormalDataset(Dataset):
 
         if not class_choice is  None:
             self.cat = {k:v for k,v in self.cat.items() if k in class_choice}
-        # print(self.cat)
 
         self.meta = {}
         with open(os.path.join(self.root, 'train_test_split', 'shuffled_train_file_list.json'), 'r') as f:
@@ -41,11 +40,9 @@ class PartNormalDataset(Dataset):
         with open(os.path.join(self.root, 'train_test_split', 'shuffled_test_file_list.json'), 'r') as f:
             test_ids = set([str(d.split('/')[2]) for d in json.load(f)])
         for item in self.cat:
-            # print('category', item)
             self.meta[item] = []
             dir_point = os.path.join(self.root, self.cat[item])
             fns = sorted(os.listdir(dir_point))
-            # print(fns[0][0:-4])
             if split == 'trainval':
                 fns = [fn for fn in fns if ((fn[0:-4] in train_ids) or (fn[0:-4] in val_ids))]
             elif split == 'train':
@@ -58,7 +55,6 @@ class PartNormalDataset(Dataset):
                 print('Unknown split: %s. Exiting..' % (split))
                 exit(-1)
 
-            # print(os.path.basename(fns))
             for fn in fns:
                 token = (os.path.splitext(os.path.basename(fn))[0])
                 self.meta[item].append(os.path.join(dir_point, token + '.txt'))
@@ -79,8 +75,6 @@ class PartNormalDataset(Dataset):
                             'Table': [47, 48, 49], 'Airplane': [0, 1, 2, 3], 'Pistol': [38, 39, 40],
                             'Chair': [12, 13, 14, 15], 'Knife': [22, 23]}
 
-        # for cat in sorted(self.seg_classes.keys()):
-        #     print(cat, self.seg_classes[cat])
 
         self.cache = {}  # from index to (point_set, cls, seg) tuple
         self.cache_size = 20000
@@ -109,7 +103,6 @@ class PartNormalDataset(Dataset):
         point_set = point_set[choice, :]
         seg = seg[choice]
         onehot = self.get_catgory_onehot(cls).unsqueeze(0)
-#         lra = compute_LRA(torch.from_numpy(point_set[:, :3]).float().unsqueeze(0), True, nsample = 32)
         if self.normal_channel:
             data = Data(pos=torch.from_numpy(point_set[:, :3]).float(), y=torch.from_numpy(cls).long(),
                     norm=torch.from_numpy(point_set[:, 3:]).float(), seg=torch.from_numpy(seg).long(), onehot=onehot)

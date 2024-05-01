@@ -63,7 +63,7 @@ class seg_Trainer(object):
         elif self.opt.rot_z:
             train_transform = T.Compose([utils.RandRotSO3(self.opt.with_norm, self.opt.task, [[180, 2]]),
                                          utils.RandomShiver(self.opt.with_norm, self.opt.task),
-                                         #utils.RandomTranslate(),           # comment this when using --glob bary for a
+                                         utils.RandomTranslate(),           # comment this when using --glob bary for a
                                                                             # better performance
                                          utils.LRF(self.opt.o3d_normal,
                                                    self.opt.o3d_normal_orien,
@@ -101,11 +101,14 @@ class seg_Trainer(object):
         elif self.opt.dataset=="ShapeNetPart":
             from Data import PartNormalDataset
             root = 'dataset/shapenetcore_partanno_segmentation_benchmark_v0_normal'
-            self.train_dataset = PartNormalDataset(root, npoints=2048, split='train', class_choice=None, normal_channel=False, transform=train_transform)
-            self.test_dataset = PartNormalDataset(root, npoints=2048, split='test', class_choice=None, normal_channel=False, transform=test_transform)
+            self.train_dataset = PartNormalDataset(root, npoints=2048, split='train', class_choice=None, normal_channel=True, transform=train_transform)
+            self.test_dataset = PartNormalDataset(root, npoints=2048, split='test', class_choice=None, normal_channel=True, transform=test_transform)
         else:
             print("No such dataset.")
             assert 1==0
+
+
+#         self.train_dataset.class_num = self.train_dataset.class_num
 
         self.train_loader = DataLoader(dataset=self.train_dataset,
                                          batch_size=self.opt.batch_size,
@@ -118,9 +121,11 @@ class seg_Trainer(object):
                                       shuffle=False,
                                       num_workers=int(self.opt.workers),
                                       drop_last=False)
+#         self.opt.output_channels = int(self.train_dataset.class_num)
+
 
     def build_network(self):
-        network = Networks.seg_PaRINet(self.opt)
+        network = Networks.seg_Net(self.opt)
 
 #         print(network)
         utils.count_parameters(network)

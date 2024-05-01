@@ -8,3 +8,5 @@ numpy==1.21.2
 termcolor
 open3d==0.16.0
 tqdm
+easydict
+numba==0.56.4

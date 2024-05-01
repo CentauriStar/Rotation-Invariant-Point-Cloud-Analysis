@@ -261,11 +261,11 @@ class mn_clsNet(nn.Module):
         pos_i = data.pos[row]
         pos_j = data.pos[col]
         if last == True:
-            norm_i = data.l2[row] # scanobj:l2(LRA), others:l0(LRA)
-            norm_j = data.l2[col] # scanobj:l2, others:l0
+            norm_i = data.l0[row] # scanobj:l2(LRA), others:l0(LRA)
+            norm_j = data.l0[col] # scanobj:l2, others:l0
         else:
-            norm_i = data.l0[row] # scanobj:l0(norm), others:l2(norm)
-            norm_j = data.l0[col] # scanobj:l0, others:l2
+            norm_i = data.l2[row] # scanobj:l0(norm), others:l2(norm)
+            norm_j = data.l2[col] # scanobj:l0, others:l2
 
         x_i_axis = data.l1[row]
         x_j_axis = data.l1[col]

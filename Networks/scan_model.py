@@ -3,7 +3,7 @@ import torch.nn as nn
 # from torch.nn import Sequential as Seq, Dropout, Linear as Lin, ReLU, BatchNorm1d as BN
 import torch.nn.functional as F
 import numpy as np
-from torch_batch_svd import batch_svd
+from torch_batch_svd import svd
 
 PI = torch.from_numpy(np.array(np.pi))
 
@@ -214,11 +214,11 @@ class scan_clsNet(nn.Module):
         x = self.conv1(torch.cat([RIF, feat_select(x, col) - pad_x , pad_x], dim=1))  # EdgeConv [32, 64, 1024, 20]
         x1 = x.max(dim=-1, keepdim=False)[0] # [32, 64, 1024]
 
-        APPF, edge_index = self.get_graph_feature(x1, data, None, True) # [655360, 8]
+        APPF, edge_index = self.get_graph_feature(x1, data, None) # [655360, 8]
 
         x2 = self.pari_1(x1, APPF, g_out1, edge_index, bs=batch_size) # [32, 64, 1024]
 
-        APPF, edge_index = self.get_graph_feature(x2, data, None, True) # [655360, 8]
+        APPF, edge_index = self.get_graph_feature(x2, data, None) # [655360, 8]
         x3 = self.pari_2(x2, APPF, g_out1, edge_index, bs=batch_size) # [32, 128, 1024]
 
         APPF, edge_index = self.get_graph_feature(x3, data, None, True) # [655360, 8]
@@ -368,7 +368,7 @@ def global_transform(points, npoints, train):
     idx = farthest_point_sample(points, npoints)
     centroids = index_points(points, idx)   #[B, S, C] 
     # print(centroids.shape)
-    U, S, V = batch_svd(centroids)
+    U, S, V = svd(centroids)
 
     if train == True:
         index = torch.randint(2, (points.size(0), 1, 3)).type(torch.FloatTensor).cuda()

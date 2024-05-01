@@ -42,23 +42,6 @@ class Meters(object):
         self.update('label', label)
         self.update('loss', loss)
         self.update('cat', cat)
-        
-#         print('label:', np.array(np.concatenate(self.losses['label'])).shape)
-#         print('preds:', np.array(np.concatenate(self.losses['preds'])).shape)
-#         print('cat:', torch.cat(self.losses['cat']).shape)
-#         print('len:', len(np.concatenate(self.losses['label'])))
-        
-        # part_iou = []
-        # for part in range(label.min(), label.max() + 1):
-        #     I = ((pred == part) & (label == part)).sum()
-        #     U = ((pred == part) | (label == part)).sum()
-        #     if U == 0:
-        #         iou = 1  # If the union of groundtruth and prediction points is empty, then count part IoU as 1
-        #     else:
-        #         iou = I / float(U)
-        #     part_iou.append(iou)
-
-        # print(torch.tensor(part_iou).mean())
 
     def collect_dict(self, **kwargs):
         for key, value in kwargs.items():
@@ -77,7 +60,6 @@ class Meters(object):
         train_true = np.concatenate(self.losses['label'])
         train_pred = np.concatenate(self.losses['preds'])
         try:
-        #     print(self.losses['cat'])
             train_cats = torch.cat(self.losses['cat'])
         except:
             pass
@@ -119,7 +101,6 @@ class Meters(object):
                 cat_iou[cat] += shape_ious[i]
                 count[cat] += 1
             for _, name in enumerate(seg_classes.keys()):
-                # print("% *s"% (len, A))
                 print("%15s"%name, end='')
             print()
             for iou in cat_iou/count:
@@ -131,16 +112,10 @@ class Meters(object):
                 result['train_acc'] = metrics.accuracy_score(train_true.reshape(-1), train_pred.reshape(-1))
                 result['train_avg_acc'] = metrics.balanced_accuracy_score(train_true.reshape(-1),
                                                                           train_pred.reshape(-1))
-#                 result['true'] = train_true.reshape(-1)
-#                 result['pred'] = train_pred.reshape(-1)
             else:
                 result['test_acc'] = metrics.accuracy_score(train_true.reshape(-1), train_pred.reshape(-1))
                 result['test_avg_acc'] = metrics.balanced_accuracy_score(train_true.reshape(-1), train_pred.reshape(-1))
 
-#         print(train_true.reshape(-1).shape)
-#         np.savetxt(r'true.txt', train_true.reshape(-1), fmt='%d')
-#         np.savetxt(r'pred.txt', train_pred.reshape(-1), fmt='%d')
-#         print(result['train_loss'], result['train_acc'], result['train_avg_acc']) # test ScanObjectNN
         print(result)
 
         self.clear()

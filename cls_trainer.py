@@ -123,9 +123,9 @@ class cls_Trainer(object):
 
     def build_network(self):
         if self.opt.network == "ModelNet":
-            network = Networks.mn_PaRINet(self.opt)
+            network = Networks.mn_clsNet(self.opt)
         elif self.opt.network == "ScanObjectNN":
-            network = Networks.scan_PaRINet(self.opt)
+            network = Networks.scan_clsNet(self.opt)
 
         # print(network)
         utils.count_parameters(network)

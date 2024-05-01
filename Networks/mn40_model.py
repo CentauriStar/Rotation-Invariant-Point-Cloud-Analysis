@@ -1,6 +1,5 @@
 import torch
 import torch.nn as nn
-# from torch.nn import Sequential as Seq, Dropout, Linear as Lin, ReLU, BatchNorm1d as BN
 import torch.nn.functional as F
 import numpy as np
 from torch_batch_svd import svd
@@ -110,7 +109,7 @@ class PaRIConv(nn.Module):
         self.k = k
 
         self.basis_matrix = nn.Conv1d(in_dim, in_dim, kernel_size=1, bias=False)
-        self.dynamic_kernel = nn.Sequential(nn.Conv2d(feat_dim, in_dim//4, kernel_size=1),  # modi:in_dim//2 --> in_dim//4, in_dim --> in_dim//2
+        self.dynamic_kernel = nn.Sequential(nn.Conv2d(feat_dim, in_dim//4, kernel_size=1), 
                                             nn.BatchNorm2d(in_dim//4),
                                             nn.ReLU(),
                                             nn.Conv2d(in_dim // 4, in_dim//2, kernel_size=1))
@@ -119,31 +118,19 @@ class PaRIConv(nn.Module):
         self.edge_conv = nn.Sequential(nn.Conv2d(in_dim*2, out_dim, kernel_size=1, bias=False),
                                        nn.BatchNorm2d(out_dim),
                                        nn.LeakyReLU(negative_slope=0.2))
-        '''
-        self.conv = nn.Sequential(nn.Conv2d(in_dim*2, in_dim, (1, 1), bias=False),
-                                  nn.BatchNorm2d(in_dim),
-                                  nn.LeakyReLU(negative_slope=0.2))
-        '''
-        self.feature_fusion = feature_fusion(in_dim,2) #modi:2, modi1:16, modi2:8
+        self.feature_fusion = feature_fusion(in_dim,2)
 
     def forward(self, x, APPF, glf, edge_index, bs):
         _, C = APPF.size()
         APPF = APPF.view(bs, -1, self.k, C).permute(0, 3, 1, 2).contiguous() # [32, 8, 1024, 20]
-        # RIF = torch.cat([APPF, glf], dim=1) # [32, 14, 1024, 20]
-        # RIF = self.feature_fusion(RIF) # [32, 14, 1024, 20]
-        APPF = self.dynamic_kernel(APPF) # [32, in_dim//2, 1024, 20] in_dim=64,64,128
+        APPF = self.dynamic_kernel(APPF) # [32, in_dim//2, 1024, 20] 
         RIF = torch.cat([APPF, glf], dim=1) # [32, in_dim, 1024, 20]
         RIF = self.feature_fusion(RIF) # [32, in_dim, 1024, 20]
-#         RIF = self.conv(RIF) # [32, in_dim, 1024, 20]
-#         RIF = self.feature_fusion(RIF) # [32, in_dim, 1024, 20]
         
-        #print('111')
-        #print(APPF.shape)
         row, col = edge_index
 
         feat = self.act(RIF * feat_select(self.basis_matrix(x), col))            # BN, k, C
         pad_x = x.unsqueeze(-1).repeat(1, 1, 1, self.k)
-        #print(pad_x.shape)
         return self.edge_conv(torch.cat((feat - pad_x, pad_x), dim=1)).max(dim=-1, keepdim=False)[0]   # BN, C
 
 
@@ -191,22 +178,17 @@ class mn_clsNet(nn.Module):
         BN, feat_dim = data.x.size()
         N = int(BN/batch_size)
         data.x = data.x.view(batch_size, -1, feat_dim).permute(0, 2, 1)
-        # _, N, _ = data.x.size()
-        # data.pos = data.pos.cuda()
-        # data.norm = data.norm.cuda()
 
         euc_knn_idx = knn(data.pos.view(batch_size, -1, 3).permute(0, 2, 1), k=self.k).cuda()
 
         x = data.x # [32, 3, 1024]
 
         eq_coor = self.psa(global_transform(data.pos.view(batch_size, 3, -1), 32, train=train)) # [32, 3, 1024]
-#         eq_coor = global_transform(data.pos.view(batch_size, 3, -1), 32, train=train) # [32, 3, 1024]
-#         eq_coor = global_transform(data.pos.view(batch_size, 3, -1), 32, True) # [32, 3, 1024]
         global_f = get_neighbor(eq_coor) # [32, 6, 1024, 20]
         g_out1 = self.gb_gconv_1(global_f) # [32, 32, 1024, 20]
         g_out2 = self.gb_gconv_2(g_out1) # [32, 64, 1024, 20]
 
-        APPF, (row, col) = self.get_graph_feature(data.pos, data, euc_knn_idx, True) # [655360, 8] # add <True> when using ScanObjectNN dataset
+        APPF, (row, col) = self.get_graph_feature(data.pos, data, euc_knn_idx, True) # [655360, 8]
         APPF = APPF.view(batch_size, N, self.k, -1).permute(0, 3, 1, 2).contiguous() # [32, 8, 1024, 20]
         RIF = torch.cat([APPF,global_f],dim=1) # [32, 14, 1024, 20]
         RIF = self.feature_fusion(RIF) # [32, 14, 1024, 20]
@@ -214,11 +196,11 @@ class mn_clsNet(nn.Module):
         x = self.conv1(torch.cat([RIF, feat_select(x, col) - pad_x , pad_x], dim=1))  # EdgeConv [32, 64, 1024, 20]
         x1 = x.max(dim=-1, keepdim=False)[0] # [32, 64, 1024]
 
-        APPF, edge_index = self.get_graph_feature(x1, data, None) # [655360, 8] # add <True> when using ScanObjectNN dataset
+        APPF, edge_index = self.get_graph_feature(x1, data, None) # [655360, 8] 
 
         x2 = self.pari_1(x1, APPF, g_out1, edge_index, bs=batch_size) # [32, 64, 1024]
 
-        APPF, edge_index = self.get_graph_feature(x2, data, None) # [655360, 8] # add <True> when using ScanObjectNN dataset
+        APPF, edge_index = self.get_graph_feature(x2, data, None) # [655360, 8]
         x3 = self.pari_2(x2, APPF, g_out1, edge_index, bs=batch_size) # [32, 128, 1024]
 
         APPF, edge_index = self.get_graph_feature(x3, data, None, True) # [655360, 8]
@@ -239,17 +221,12 @@ class mn_clsNet(nn.Module):
 
         return x
 
-    def get_graph_feature(self, x, data, idx=None, last=False):
-        # row, col = knn(x, self.k)
-        # edge_index = torch.stack([row, col], dim=0)
-        # row, col = remove_self_loops(edge_index)[0]
-
+    def get_graph_feature(self, x, data, idx=None, flag=False):
         if idx is None:
             idx = knn(x, k=self.k).cuda()  # (batch_size, num_points, k)
 
         batch_size = idx.size(0)
         num_points = idx.size(1)
-        # x = x.view(batch_size, -1, num_points)
 
         device = torch.device('cuda')
         idx_base = torch.arange(0, batch_size, device=device).view(-1, 1, 1) * num_points
@@ -260,12 +237,12 @@ class mn_clsNet(nn.Module):
 
         pos_i = data.pos[row]
         pos_j = data.pos[col]
-        if last == True:
-            norm_i = data.l0[row] # scanobj:l2(LRA), others:l0(LRA)
-            norm_j = data.l0[col] # scanobj:l2, others:l0
+        if flag == True:
+            norm_i = data.l2[row] 
+            norm_j = data.l2[col] 
         else:
-            norm_i = data.l2[row] # scanobj:l0(norm), others:l2(norm)
-            norm_j = data.l2[col] # scanobj:l0, others:l2
+            norm_i = data.l0[row]
+            norm_j = data.l0[col] 
 
         x_i_axis = data.l1[row]
         x_j_axis = data.l1[col]
@@ -367,7 +344,6 @@ def global_transform(points, npoints, train):
     points = points.permute(0, 2, 1)
     idx = farthest_point_sample(points, npoints)
     centroids = index_points(points, idx)   #[B, S, C] 
-    # print(centroids.shape)
     U, S, V = svd(centroids)
 
     if train == True:
@@ -383,7 +359,6 @@ def global_transform(points, npoints, train):
 
     xyz = torch.matmul(points, V).permute(0, 2, 1) # [Batch_size, 3, 1024]
 
-    # feature = graph_feature(xyz, k=knn) #[B, C, S, K] 
     return xyz
 
 class Point_Spatial_Attention(nn.Module):
@@ -405,9 +380,6 @@ class Point_Spatial_Attention(nn.Module):
         self.key_conv = nn.Sequential(nn.Conv1d(in_channels=128, out_channels=16, kernel_size=1, bias=False),
                                         self.bn3,
                                         nn.ReLU())
-#         self.value_mlp = nn.Sequential(nn.Conv1d(in_channels=3, out_channels=64, kernel_size=1, bias=False),
-#                                         self.bn3,
-#                                         nn.ReLU())
         self.value_conv = nn.Sequential(nn.Conv1d(in_channels=128, out_channels=in_dim, kernel_size=1, bias=False),
                                         self.bn4,
                                         nn.ReLU())
@@ -421,10 +393,6 @@ class Point_Spatial_Attention(nn.Module):
         proj_key = self.key_conv(feat).permute(0, 2, 1) # [B, 1024, 16]
         similarity_mat = self.softmax(torch.bmm(proj_key, proj_query)) # [B, 1024, 1024]
 
-        # affinity_mat = torch.max(similarity_mat, -1, keepdim=True)[0].expand_as(similarity_mat)-similarity_mat
-        # affinity_mat = self.softmax(affinity_mat)
-        
-#         proj_value = self.value_mlp(x)
         proj_value = self.value_conv(feat) # [B, 3, 1024]
         out = torch.bmm(proj_value, similarity_mat.permute(0, 2, 1))
         out = self.alpha*out + x 
@@ -435,7 +403,7 @@ class feature_fusion(nn.Module):
         super(feature_fusion, self).__init__()
 
         self.conv = nn.Sequential(
-          nn.Conv2d(in_dim, in_dim//reduction, (1, 1), bias=False), # modi: in_dim --> in_dim//2, new: 4th line, default reduction:2
+          nn.Conv2d(in_dim, in_dim//reduction, (1, 1), bias=False), 
           nn.BatchNorm2d(in_dim//reduction),
           nn.LeakyReLU(negative_slope=0.2),
           nn.Conv2d(in_dim//reduction, in_dim, (1, 1), bias=False),
@@ -443,8 +411,5 @@ class feature_fusion(nn.Module):
         )
     def forward(self, x):
         att = self.conv(x)
-#         att = F.softmax(att, dim=1)
-#         att = F.sigmoid(out)
         out = x * att
-        # out = torch.sum(out, dim=-1, keepdim=True)
         return out

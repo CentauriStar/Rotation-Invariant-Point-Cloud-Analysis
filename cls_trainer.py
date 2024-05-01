@@ -235,10 +235,6 @@ class cls_Trainer(object):
         end_time = time.time()
         print('time: %.6f' %(end_time-start_time))
         result = self.meter.output()
-#         true_filename = 'true_{}.txt'.format(self.epoch)
-#         pred_filename = 'pred_{}.txt'.format(self.epoch)
-#         np.savetxt(true_filename, result['true'], fmt='%d')
-#         np.savetxt(pred_filename, result['pred'], fmt='%d')
         if self.opt.test_final:
             self.result.collect_dict(**result)
 

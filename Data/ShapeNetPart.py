@@ -112,7 +112,7 @@ class PartNormalDataset(Dataset):
 #         lra = compute_LRA(torch.from_numpy(point_set[:, :3]).float().unsqueeze(0), True, nsample = 32)
         if self.normal_channel:
             data = Data(pos=torch.from_numpy(point_set[:, :3]).float(), y=torch.from_numpy(cls).long(),
-                    norm=torch.from_numpy(point_set[:, :3]).float(), seg=torch.from_numpy(seg).long(), onehot=onehot)
+                    norm=torch.from_numpy(point_set[:, 3:]).float(), seg=torch.from_numpy(seg).long(), onehot=onehot)
         else:
             data = Data(pos=torch.from_numpy(point_set[:, :3]).float(), y=torch.from_numpy(cls).long(), seg=torch.from_numpy(seg).long(), onehot=onehot)
             data.id = index
@@ -129,7 +129,7 @@ class PartNormalDataset(Dataset):
         onehot = torch.zeros(len(self.cat))
         onehot[cat_id] = 1
         return onehot
-
+    
 def compute_LRA(xyz, weighting=False, nsample = 64):
     dists = torch.cdist(xyz, xyz)
 

@@ -26,14 +26,14 @@ We train & test under the environment listed below, _the higher version of CUDA 
 
 ## Prerequisites
 - ### torch-batch-svd installation<br>
-    > reference to the [torch-batch-svd](https://github.com/KinglittleQ/torch-batch-svd) GitHub page.<br>
+    > Reference to the [torch-batch-svd](https://github.com/KinglittleQ/torch-batch-svd) GitHub page.<br>
     ```
     sudo git clone https://github.com/KinglittleQ/torch-batch-svd
     export CUDA_HOME=/your/cuda/home/directory/
     cd torch-batch-svd
     python setup.py install
     ```
-    Then, rewrite `line 20` of `.../torch_batch_svd/batch_svd.py` to `input.shape[-1] <= 32 and input.shape[-2] <= 32`
+    Then, rewrite `line 20` of `.../torch_batch_svd/batch_svd.py` to `input.shape[-1] <= 32 and input.shape[-2] <= 32`.
 - ### packages installation
   ```
   pip install -r requirements.txt
@@ -68,6 +68,10 @@ We train & test under the environment listed below, _the higher version of CUDA 
       ├── Networks
       ├── ...
       ```
+## Quick Demo
+ We have already placed the pre-trained model of ModelNet40 (also shared below) in the `log` folder.<br><br>
+ You can simply use `sh scripts/test/test_MN40_rotz_normals.sh` to test the performance on ModelNet40 in z/z case.
+
 
 ## Training
 ```
@@ -95,7 +99,6 @@ tensorboard --logdir log
 ## Testing
   ### Pre-trained models
   We provide pre-trained models for classification and segmentation tasks. _The models are trained with normals in z case._<br>
-  We have already placed the pre-trained model of ModelNet40 in the `log` folder.
   | datasets    | Acc. / mIOU |    links    |
   | :-----------: | :-----------: | :-----------: |
   | ModelNet40     | 93.2%       | [Google Drive](https://drive.google.com/file/d/16oASX1ocYH7S1f1Zl3DWN7csWiRHLBdP/view?usp=drive_link) / [Baidu NetDisk](https://pan.baidu.com/s/1qS-BgfKb1JjL1Bo117RUjg) (code: 4qsz)       |
@@ -103,7 +106,7 @@ tensorboard --logdir log
   | ShapeNet Part  | 83.3%        | [Google Drive](https://drive.google.com/file/d/1NaVlUbmO-MgdMJh7xCCgjtIL3rSceR-_/view?usp=sharing) / [Baidu NetDisk](https://pan.baidu.com/s/1Mi7FQ0ZTtMJKc62aFT3s7Q) (code: 6xnc)       |
   > *We report the accuracy on PB_T50_RS variant of ScanObjectNN.
   
-  For example, you can download the provided pre-trained model for ModelNet40, and rename the `.pth` file to `network_0.pth`. Place the file in `log/modelnet40_rotz/best/network_0.pth` to test the performance for ModelNet40 with normals in z case.<br><br>
+  For example, you can download the provided pre-trained model for ModelNet40, and rename the `.pth` file to `network_0.pth`. Place the file in `log/modelnet40_rotz/best/network_0.pth` to test the performance for ModelNet40 with normals in z/z case.<br><br>
     _**Note:**_ Due to the _random_ factor of testing, the results may not be identical for multiple runs, please run several times to obtain the best performance.<br>
 ```
 # ModelNet40

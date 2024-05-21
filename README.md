@@ -1,10 +1,9 @@
 # Rethinking Local-to-Global Representation Learning for Rotation-Invariant Point Cloud Analysis
 by Zhaoxuan Wang, Yunlong Yu and [Xianzhi Li](https://nini-lxz.github.io/) <br>
-<!--(in *Pattern Recognition 2024* [paper] [supp.])-->
+in *Pattern Recognition* <!--[paper] [supp.]-->
 
 ## Introduction
-This repository is the official implementation of "**Rethinking Local-to-Global Representation Learning for Rotation-Invariant Point Cloud Analysis**". <br>
-<!--in Pattern Recognition (PR). -->
+This repository is the official implementation of "**Rethinking Local-to-Global Representation Learning for Rotation-Invariant Point Cloud Analysis**" in Pattern Recognition (PR). <br>
 In this paper, we propose a novel rotation-invariant method that embeds both distinctive local and global rotation-invariant information. Specifically, we design a two-branch network that separately extracts purely local and global rotation-invariant features. 
 In the global branch, we leverage canonical transformation to extract global representations, while in the local branch, we utilize hand-crafted geometric features to embed local representations.
 To fuse the features from distinct branches, we introduce an attention-based fusion module to adaptively integrate the local-to-global representation by considering the geometry contexts of each point. 

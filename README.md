@@ -1,9 +1,9 @@
 # Rethinking Local-to-Global Representation Learning for Rotation-Invariant Point Cloud Analysis
-by Zhaoxuan Wang, Yunlong Yu and [Xianzhi Li](https://nini-lxz.github.io/) <br>
-in *Pattern Recognition* <!--[paper] [supp.]-->
+by Zhaoxuan Wang, Yunlong Yu and [Xianzhi Li](https://nini-lxz.github.io/). <br>
+in *Pattern Recognition 2024*. [[paper]](https://drive.google.com/file/d/18tShCuChv4YMWwNBfYUoQorB1NwQPOJQ/view?usp=sharing) [[supp.]](https://drive.google.com/file/d/1jCnGteYHixQQifisYus1qsFdgDq8MhHC/view?usp=sharing)
 
 ## Introduction
-This repository is the official implementation of "**Rethinking Local-to-Global Representation Learning for Rotation-Invariant Point Cloud Analysis**" in Pattern Recognition (PR). <br>
+This repository is the official implementation of "**Rethinking Local-to-Global Representation Learning for Rotation-Invariant Point Cloud Analysis**" in [Pattern Recognition (PR)](https://www.sciencedirect.com/science/article/pii/S0031320324003753). <br>
 In this paper, we propose a novel rotation-invariant method that embeds both distinctive local and global rotation-invariant information. Specifically, we design a two-branch network that separately extracts purely local and global rotation-invariant features. 
 In the global branch, we leverage canonical transformation to extract global representations, while in the local branch, we utilize hand-crafted geometric features to embed local representations.
 To fuse the features from distinct branches, we introduce an attention-based fusion module to adaptively integrate the local-to-global representation by considering the geometry contexts of each point. 
@@ -13,7 +13,7 @@ Particularly, different from existing rotation-invariant works, we further intro
     <img src="intro/overview.png"/ width="70%" height="70%">
 </div>
 
-<!--If you have any questions about this work, please open an issue or contact us.-->
+<br>If you have any questions about this work, please open an issue or contact via wang_zx@hust.edu.cn or xzli@hust.edu.cn.
 
 ## Environment
 We train & test under the environment listed below, _the higher version of CUDA may not be compatible_.
@@ -39,12 +39,12 @@ We train & test under the environment listed below, _the higher version of CUDA 
   ```
 - ### datasets preparation
   - #### ModelNet40
-      download the ModelNet40 [here](https://shapenet.cs.stanford.edu/media/modelnet40_normal_resampled.zip), and place the unzipped files in `dataset/modelnet40_normal_resampled`
+      Download the ModelNet40 [here](https://shapenet.cs.stanford.edu/media/modelnet40_normal_resampled.zip), and place the unzipped files in `dataset/modelnet40_normal_resampled`.
   - #### ScanObjectNN
-      download ScanObjectNN h5 files [here](https://hkust-vgd.github.io/scanobjectnn/), and place the unzipped files in `dataset/ScanObjectNN/h5_files`
+      Download ScanObjectNN h5 files [here](https://hkust-vgd.github.io/scanobjectnn/), and place the unzipped files in `dataset/ScanObjectNN/h5_files`.
   - #### ShapeNet Part
-      download ShapeNet Part [here](https://shapenet.cs.stanford.edu/media/shapenetcore_partanno_segmentation_benchmark_v0_normal.zip), and place the unzipped files in `dataset/shapenetcore_partanno_segmentation_benchmark_v0_normal`<br><br>
-      overall, the `dataset` folder structure is as follows:
+      Download ShapeNet Part [here](https://shapenet.cs.stanford.edu/media/shapenetcore_partanno_segmentation_benchmark_v0_normal.zip), and place the unzipped files in `dataset/shapenetcore_partanno_segmentation_benchmark_v0_normal`.<br><br>
+      Overall, the `dataset` folder structure is as follows:<br><br>
       ```
       ├── Data
       ├── dataset
@@ -166,6 +166,21 @@ sh scripts/test/test_Seg_so3.sh # for ShapeNet Part without normals in SO3 case
     <img src="intro/partseg_visualization.png"/ width="70%" height="70%">
 </div>
 
+## Acknowledgment
+The part of the code frame is borrowed from [PaRI-Conv](https://github.com/GostInShell/PaRI-Conv).
 
-<!--## Citation-->
-<!--If you find our work helpful in your research, please consider citing:-->
+## License
+This project is released under the [MIT License](LICENSE).
+
+## Citation
+If you find our work helpful in your research, please consider citing:
+```
+@article{wang2024rethinking,
+  title={{Rethinking Local-to-Global Representation Learning for Rotation-Invariant Point Cloud Analysis}},
+  author={Wang, Zhaoxuan and Yu, Yunlong and Li, Xianzhi},
+  journal={Pattern Recognition},
+  pages={110624},
+  year={2024},
+  publisher={Elsevier}
+}
+```
